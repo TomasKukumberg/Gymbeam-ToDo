@@ -1,10 +1,10 @@
-export interface List {
+export interface IList {
     createdAt: string,
     name: string,
     id: number
 }
 
-export interface Item {
+export interface ITodo {
     name: string,
     complete: boolean,
     priority: string,

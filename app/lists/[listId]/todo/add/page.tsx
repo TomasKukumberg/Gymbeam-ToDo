@@ -1,30 +1,35 @@
 'use client'
 import { BASE_API_URL } from '@/app/constants'
 import React, { useState } from 'react'
+import { FunctionComponent} from 'react'
+import { useRouter } from 'next/navigation'
 
-const AddTodo = ({params}) => {
+const AddTodo: FunctionComponent<{params: { listId: number }}> = ({params}) => {
     const [name, setName] = useState('')
     const [complete, setComplete] = useState('')
     const [priority, setPriority] = useState('')
     const [dueDate, setDueDate] = useState('')
     const [createdAt, setCreatedAt] = useState('')
     const [tags, setTags] = useState('')
+    const router = useRouter()
 
-    const handleAction = async (e) => {
-        const res = await fetch(BASE_API_URL + '/lists/' + params.listId + '/todos', {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        await fetch(BASE_API_URL + '/lists/' + params.listId + '/todos', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json',
             },
             body: JSON.stringify({name: name, complete: complete, priority: priority, dueDate: dueDate, createdAt: createdAt, tags: tags})
         })
-        return false;
+        router.push('/lists/' + params.listId)
+        router.refresh()
     }
 
     return (
         <>
             <div>Add Todo for list {params.listId}</div>
-            <form action={handleAction}>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="name">Name</label>
                 <input type="text" onChange={(e) => setName(e.target.value)} value={name} id="name" />
                 

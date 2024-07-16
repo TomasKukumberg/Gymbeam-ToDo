@@ -2,15 +2,16 @@
 import { BASE_API_URL } from '@/app/constants'
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { FunctionComponent} from 'react'
 
-const EditListItem = ({params}) => {
+const EditListItem: FunctionComponent<{params: { listId: number }}> = ({params}) => {
     const [listItem, setListItem] = useState({id: '', name: '', createdAt: ''})
     const [listName, setListName] = useState('')
     const router = useRouter()
 
-    const handleClick = async(e) => {
+    const handleClick = async(e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        const res = await fetch(BASE_API_URL + '/lists/' + listItem.id, {
+        await fetch(BASE_API_URL + '/lists/' + listItem.id, {
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json',

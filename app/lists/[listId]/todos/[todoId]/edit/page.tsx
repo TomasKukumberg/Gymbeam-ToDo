@@ -2,8 +2,9 @@
 import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { BASE_API_URL } from '@/app/constants'
+import { FunctionComponent} from 'react'
 
-const EditTodoPage = ({params}) => {
+const EditTodoPage: FunctionComponent<{params: { listId: number, todoId: number }}> = ({params}) => {
     const [todoItem, setTodoItem] = useState({id: '', listId: '', name: '', createdAt: '', dueDate: '', complete: '', priority: '', tags: ''})
     const [todoName, setTodoName] = useState('')
     const [todoCreatedAt, setTodoCreatedAt] = useState('')
@@ -29,9 +30,9 @@ const EditTodoPage = ({params}) => {
         fetchData();
     }, [])
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        const res = await fetch(BASE_API_URL + '/lists/' + params.listId + '/todos/' + params.todoId, {
+        await fetch(BASE_API_URL + '/lists/' + params.listId + '/todos/' + params.todoId, {
             method: 'PUT',
             headers: {
                 'Content-type': 'application/json',
