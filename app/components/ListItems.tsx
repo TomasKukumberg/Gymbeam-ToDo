@@ -14,6 +14,17 @@ const ListItems: FunctionComponent<{lists: IList[]}> = ({lists} ) => {
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, listId: number) => {
     e.preventDefault();
+
+    /* Delete list items first. */
+    const resp = await fetch(BASE_API_URL + '/lists/' + listId + '/todos')
+    const todos = await resp.json()
+    for (const todo of todos) {
+      await fetch(BASE_API_URL + '/lists/' + listId + '/todos/' + todo.id, {
+        method: 'DELETE'
+      })
+    }
+    
+    /* After items are deleted, we can now safely delete the list itself. */
     const res = await fetch(BASE_API_URL + '/lists/' + listId, {
       method: 'DELETE'
     })
