@@ -14,32 +14,34 @@ const ListItems: FunctionComponent<{lists: IList[]}> = ({lists} ) => {
 
   const handleDelete = async (e: React.MouseEvent<HTMLButtonElement>, listId: number) => {
     e.preventDefault();
-    await fetch(BASE_API_URL + '/lists/' + listId, {
+    const res = await fetch(BASE_API_URL + '/lists/' + listId, {
       method: 'DELETE'
     })
-    setItems(items.filter((item: IList) => item.id !== listId))
-    router.refresh()
+    if (res.ok) {
+      setItems(items.filter((item: IList) => item.id !== listId))
+      router.refresh()
+    } else {
+      alert('Failed to delete the list.')
+    }
   }
   
   return (
-    <>
-        <ul>
-            {items.map((item: IList) => 
-            <li key={item.id} className='flex justify-between p-2 border-b'>
-              <Link href={'/lists/' + item.id}>
-                <span>{item.name}</span>
-              </Link>
-              <div className='flex justify-center items-center'>
-                <Link href={"/lists/" + item.id + "/edit"} className='mr-3'>
-                  <BsPencil />
-                </Link>
-                <button onClick={(e) => handleDelete(e, item.id)}>
-                  <BsFillTrash2Fill />
-                </button>
-              </div>
-            </li>)}
-        </ul>
-    </>
+    <ul className='font-mono'>
+        {items.map((item: IList) => 
+        <li key={item.id} className='flex justify-between p-2 border-b hover:border-b-2'>
+          <Link href={'/lists/' + item.id} className='hover:scale-105 hover:text-blue-700 transition-all duration-300'>
+            <span>{item.name}</span>
+          </Link>
+          <div className='flex justify-center items-center'>
+            <Link href={"/lists/" + item.id + "/edit"} className='mr-3 hover:scale-125 hover:text-blue-700 transition-all'>
+              <BsPencil />
+            </Link>
+            <button onClick={e => handleDelete(e, item.id)} className='hover:scale-125 hover:text-blue-700 transition-all'>
+              <BsFillTrash2Fill />
+            </button>
+          </div>
+        </li>)}
+    </ul>
   )
 }
 
