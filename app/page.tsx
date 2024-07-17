@@ -16,7 +16,7 @@ export default function Home() {
               </Link>
           </div>
           <div className="hidden lg:mt-0 lg:col-span-5 lg:flex">
-              <Image src='/gym.png' alt='logo of man and woman exercising' width={1200} height={969} />
+              <Image src='/gym.png' alt='logo of man and woman exercising' width={1200} height={969} priority={true} />
           </div>                
       </div>
   </section>

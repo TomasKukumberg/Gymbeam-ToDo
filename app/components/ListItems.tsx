@@ -17,11 +17,13 @@ const ListItems: FunctionComponent<{lists: IList[]}> = ({lists} ) => {
 
     /* Delete list items first. */
     const resp = await fetch(BASE_API_URL + '/lists/' + listId + '/todos')
-    const todos = await resp.json()
-    for (const todo of todos) {
-      await fetch(BASE_API_URL + '/lists/' + listId + '/todos/' + todo.id, {
-        method: 'DELETE'
-      })
+    if (resp.ok) {
+      const todos = await resp.json()
+      for (const todo of todos) {
+        await fetch(BASE_API_URL + '/lists/' + listId + '/todos/' + todo.id, {
+          method: 'DELETE'
+        })
+      }
     }
     
     /* After items are deleted, we can now safely delete the list itself. */
